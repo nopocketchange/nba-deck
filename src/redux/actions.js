@@ -8,7 +8,9 @@ export const FETCH_TEAM_DETAILS_STARTED = "FETCH_TEAM_DETAILS_STARTED";
 export const FETCH_TEAM_ROSTER_SUCCESS ="FETCH_TEAM_ROSTER_SUCCESS";
 export const FETCH_TEAM_ROSTER_FAILURE = "FETCH_TEAM_ROSTER_FAILURE";
 export const FETCH_TEAM_ROSTER_STARTED = "FETCH_TEAM_ROSTER_STARTED";
-
+export const FETCH_TEAM_COLORS_SUCCESS ="FETCH_TEAM_COLORS_SUCCESS";
+export const FETCH_TEAM_COLORS_FAILURE = "FETCH_TEAM_COLORS_FAILURE";
+export const FETCH_TEAM_COLORS_STARTED = "FETCH_TEAM_COLORS_STARTED";
 export const toggleTheme = (theme) => ({
   type: CHANGETHEME, payload:theme
 });
@@ -38,10 +40,10 @@ export const fetchTeamRosters = ( ) => {
   };
 };
 
-const fetchTeamRostersSuccess = rosters => ({
+const fetchTeamRostersSuccess = roster => ({
   type: FETCH_TEAM_ROSTER_SUCCESS,
   payload: {
-    ...rosters
+    roster
   }
 });
 
@@ -63,7 +65,7 @@ export const fetchTeamDetails = ( ) => {
    return axios.get("http://localhost:8000/api/teams")
       .then(res => {
         
-        dispatch(fetchTeamDetailsSuccess(res.data));
+        dispatch(fetchTeamDetailsSuccess(res.data.data));
       })
       .catch(err => {
         dispatch(fetchTeamDetailsFailure(err.message));
@@ -74,7 +76,7 @@ export const fetchTeamDetails = ( ) => {
 const fetchTeamDetailsSuccess = team => ({
   type: FETCH_TEAM_DETAILS_SUCCESS,
   payload: {
-    ...team
+    team
   }
 });
 
@@ -84,6 +86,40 @@ const fetchTeamDetailsStarted = () => ({
 
 const fetchTeamDetailsFailure = error => ({
   type: FETCH_TEAM_DETAILS_FAILURE,
+  payload: {
+    error
+  }
+});
+
+
+export const fetchTeamColors = ( ) => {
+  return dispatch => {
+    dispatch(fetchTeamColorsStarted());
+      
+   return axios.get("http://localhost:8000/api/colors")
+      .then(res => {
+        console.log(res)
+        dispatch(fetchTeamColorsSuccess(res.data.data));
+      })
+      .catch(err => {
+        dispatch(fetchTeamColorsFailure(err.message));
+      });
+  };
+};
+
+const fetchTeamColorsSuccess = color => ({
+  type: FETCH_TEAM_COLORS_SUCCESS,
+  payload: {
+    color
+  }
+});
+
+const fetchTeamColorsStarted = () => ({
+  type: FETCH_TEAM_COLORS_STARTED
+});
+
+const fetchTeamColorsFailure = error => ({
+  type: FETCH_TEAM_COLORS_FAILURE,
   payload: {
     error
   }

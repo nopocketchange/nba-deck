@@ -9,10 +9,15 @@ let initialState = {
   },
   favoriteTeam:{},
   dashtheme:{},
-  teams:[],
-  error:null,
-  loading:false,
-  rosters:[]
+  teams:null,
+  teamloading:false,
+  teamerror:null,
+  rosterloading:false,
+  rostererr:false,
+  rosters:null,
+  colors:null,
+  colorloading:false,
+  colorerr:null
 
 };
 
@@ -27,39 +32,57 @@ const preferences = (state = initialState, action) => {
     case actions.FETCH_TEAM_DETAILS_STARTED:
       return {
         ...state,
-        loading: true
+        teamloading: true
       };
     case actions.FETCH_TEAM_DETAILS_SUCCESS:
       return {
         ...state,
-        loading: false,
-        error: null,
-        teams: action.payload.data
+        teamloading: false,
+        teamerror: null,
+        teams: action.payload.team
       };
     case actions.FETCH_TEAM_DETAILS_FAILURE:
       return {
         ...state,
-        loading: false,
-        error: action.payload.error
+        teamloading: false,
+        teamerror: action.payload.error
       };
       case actions.FETCH_TEAM_ROSTER_STARTED:
       return {
         ...state,
-        loading: true
+        rosterloading: true
       };
     case actions.FETCH_TEAM_ROSTER_SUCCESS:
       return {
         ...state,
-        loading: false,
-        error: null,
-        rosters: action.payload.data
+        rosterloading: false,
+        rostererror: null,
+        rosters: action.payload.roster
       };
     case actions.FETCH_TEAM_ROSTER_FAILURE:
       return {
         ...state,
-        loading: false,
-        error: action.payload.error
+        rosterloading: false,
+        rostererror: action.payload.error
       };
+      case actions.FETCH_TEAM_COLORS_STARTED:
+        return {
+          ...state,
+          colorsloading: true
+        };
+      case actions.FETCH_TEAM_COLORS_SUCCESS:
+        return {
+          ...state,
+          colorsloading: false,
+          colorerror: null,
+          colors: action.payload.color
+        };
+      case actions.FETCH_TEAM_COLORS_FAILURE:
+        return {
+          ...state,
+          colorsloading: false,
+          colorerror: action.payload.error
+        };
     default:
       return state;
   }

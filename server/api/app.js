@@ -14,6 +14,8 @@ const indexRouter = require("./routes");
 // const profilesRouter = require("./routes/profiles");
 const teamsRouter = require("./routes/teams");
 const rostersRouter = require("./routes/rosters");
+const colorRouter =require("./routes/colors");
+const imageRouter =require("./routes/images");
 // const ytRouter = require('./routes/yt')
 const config_result = dotenv.config();
 if (process.env.NODE_ENV != "production" && config_result.error) {
@@ -39,6 +41,8 @@ app.use("/", indexRouter);
 
 app.use("/api", teamsRouter);
 app.use("/api", rostersRouter);
+app.use("/api", colorRouter);
+app.use("/api", imageRouter);
 app.use((req, res, next) => {
   next(createError(404));
 });

@@ -1,33 +1,33 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import data from "../data.json";
+
 import { useSelector, useDispatch } from "react-redux";
 import { Title } from "../style";
 const PickATeam = () => {  
     const dispatch = useDispatch();
-    const favoriteTeam = useSelector((state) => state.preferences.favoriteTeam);
+    const {favoriteTeam, colors} = useSelector((state) => state.preferences);
 
     const handleFavTeam = (e) => {
           const { id } = e.target;
-          let res = data.filter((item) => item.team === id)[0];
-          const colors = JSON.parse(res.colors).map((color) => {
+          let res = colors.filter((item) => item.team === id)[0];
+          const color = JSON.parse(res.colors).map((color) => {
             return color.colorName;
           });
           let dashTheme =  {
-            background: colors[0],
-            title: colors[1],
-            text: colors[2] || "#fff"
+            background: color[0],
+            title: color[1],
+            text: color[2] || "#fff"
           };
           dispatch({ type: 'CHANGETEAM', payload:{...res} })
           dispatch({ type: 'CHANGEDASHTHEME', payload:dashTheme })
           
        
         };
-  return (
+  return colors &&(
     <div className="App">
      <Title style={{fontSize:'90px'}}>Select Your Team</Title> 
       <div className="bg-gray-100 grid grid-cols-6">
-        {data.map((item) => (
+        {colors.map((item) => (
           <div
             onClick={(e) => {
               handleFavTeam(e);
