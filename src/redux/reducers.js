@@ -11,7 +11,8 @@ let initialState = {
   dashtheme:{},
   teams:[],
   error:null,
-  loading:false
+  loading:false,
+  rosters:[]
 
 };
 
@@ -36,6 +37,24 @@ const preferences = (state = initialState, action) => {
         teams: action.payload.data
       };
     case actions.FETCH_TEAM_DETAILS_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error
+      };
+      case actions.FETCH_TEAM_ROSTER_STARTED:
+      return {
+        ...state,
+        loading: true
+      };
+    case actions.FETCH_TEAM_ROSTER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        rosters: action.payload.data
+      };
+    case actions.FETCH_TEAM_ROSTER_FAILURE:
       return {
         ...state,
         loading: false,

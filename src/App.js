@@ -2,19 +2,20 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Switch, Route } from "react-router-dom";
-import { fetchTeamDetails } from "./redux/actions";
+import { fetchTeamDetails, fetchTeamRosters } from "./redux/actions";
 import Landing from './pages/Landing';
 import PickATeam from "./pages/PickATeam";
 import Dashboard from "./pages/Dashboard";
 const App = () => {
    const dispatch = useDispatch();
-   const {teams} =  useSelector(state => state.preferences)
+   const {teams, rosters} =  useSelector(state => state.preferences)
   useEffect(() => {
-    if(teams.length===0){
+    if(teams.length===0 && rosters.length===0){
       dispatch(fetchTeamDetails())
+      dispatch(fetchTeamRosters())
     }
    
-  }, [teams, dispatch])
+  }, [teams, dispatch, rosters])
   return (
     <Switch>
     <Route path="/team/:id">

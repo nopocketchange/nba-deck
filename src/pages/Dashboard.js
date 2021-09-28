@@ -10,16 +10,18 @@ import { Title } from "../style";
 // import ytch from "yt-channel-info";
 // import { fetchTeamDetails } from "../redux/actions";
 const Dashboard = ({  team}) => {
-    const {favoriteTeam, dashtheme, teams} = useSelector((state) => state.preferences);
-  console.log(teams)
+    const {favoriteTeam, dashtheme, teams, rosters} = useSelector((state) => state.preferences);
+  console.log(rosters)
   const [teamDetails, setTeamDetails] = useState(null)
+  const [teamRosters, setTeamRosters] = useState(null)
   const {id} = useParams()
    
 
   useEffect(()=>{
-    if (id && teams.length>0){
-      let res = teams.filter(item=> item.key===id);setTeamDetails(res[0]);
-      console.log(res)
+    if (id && teams.length>0 || rosters.length>0){
+      let details = teams.filter(item=> item.key===id);setTeamDetails(details[0]);
+      let roster = rosters.filter(item=> item.key===id);setTeamRosters(roster[0]);
+      console.log(roster)
       // ytch
       // .getChannelVideos(res[0].youtube, ["newest"], [3])
       // .then((response) => {
@@ -34,8 +36,8 @@ const Dashboard = ({  team}) => {
     
     } 
  
-  },[id, teams])
-  return teamDetails &&(
+  },[id, teams, rosters])
+  return teamDetails && teamRosters &&(
     <div>
       <div className={classNames("p-20", `bg-${dashtheme.background}`)}>
         {/* <h3 className=" mb-4 text-sm font-bold">{team ? favoriteTeam.team : ""} </h3> */}

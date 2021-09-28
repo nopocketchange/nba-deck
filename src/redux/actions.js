@@ -5,6 +5,9 @@ export const CHANGETEAM ="CHANGETEAM"
 export const FETCH_TEAM_DETAILS_SUCCESS ="FETCH_TEAM_DETAILS_SUCCESS";
 export const FETCH_TEAM_DETAILS_FAILURE = "FETCH_TEAM_DETAILS_FAILURE";
 export const FETCH_TEAM_DETAILS_STARTED = "FETCH_TEAM_DETAILS_STARTED";
+export const FETCH_TEAM_ROSTER_SUCCESS ="FETCH_TEAM_ROSTER_SUCCESS";
+export const FETCH_TEAM_ROSTER_FAILURE = "FETCH_TEAM_ROSTER_FAILURE";
+export const FETCH_TEAM_ROSTER_STARTED = "FETCH_TEAM_ROSTER_STARTED";
 
 export const toggleTheme = (theme) => ({
   type: CHANGETHEME, payload:theme
@@ -19,6 +22,39 @@ export const toggleDashTheme =(theme) => ({
   type: CHANGEDASHTHEME, payload:theme
 });
 
+
+export const fetchTeamRosters = ( ) => {
+  return dispatch => {
+    dispatch(fetchTeamRostersStarted());
+      
+   return axios.get("http://localhost:8000/api/rosters")
+      .then(res => {
+        console.log(res)
+        dispatch(fetchTeamRostersSuccess(res.data.data));
+      })
+      .catch(err => {
+        dispatch(fetchTeamRostersFailure(err.message));
+      });
+  };
+};
+
+const fetchTeamRostersSuccess = rosters => ({
+  type: FETCH_TEAM_ROSTER_SUCCESS,
+  payload: {
+    ...rosters
+  }
+});
+
+const fetchTeamRostersStarted = () => ({
+  type: FETCH_TEAM_ROSTER_STARTED
+});
+
+const fetchTeamRostersFailure = error => ({
+  type: FETCH_TEAM_ROSTER_FAILURE,
+  payload: {
+    error
+  }
+});
 
 export const fetchTeamDetails = ( ) => {
   return dispatch => {
