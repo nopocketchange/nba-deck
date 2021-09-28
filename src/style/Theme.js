@@ -1,5 +1,5 @@
   
-import React, { useContext } from "react";
+import React from "react";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
 
 import { useSelector } from "react-redux";

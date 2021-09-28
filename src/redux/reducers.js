@@ -9,7 +9,10 @@ let initialState = {
   },
   favoriteTeam:{},
   dashtheme:{},
-  teams:[]
+  teams:[],
+  error:null,
+  loading:false
+
 };
 
 const preferences = (state = initialState, action) => {
@@ -18,8 +21,26 @@ const preferences = (state = initialState, action) => {
       return { ...state, theme: action.payload.theme };
     case actions.CHANGETEAM:
       return { ...state, favoriteTeam: action.payload };
-      case actions.CHANGEDASHTHEME:
-        return { ...state, dashtheme: action.payload.theme };
+    case actions.CHANGEDASHTHEME:
+      return { ...state, dashtheme: action.payload };
+    case actions.FETCH_TEAM_DETAILS_STARTED:
+      return {
+        ...state,
+        loading: true
+      };
+    case actions.FETCH_TEAM_DETAILS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        teams: action.payload.data
+      };
+    case actions.FETCH_TEAM_DETAILS_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error
+      };
     default:
       return state;
   }
